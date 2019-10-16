@@ -169,6 +169,7 @@ public class ItemController {
             throw new SsmException(ExceptionInfoEnum.PARAM_ERROR.getCode(),"上传您的文件类型不正确！！！");
         }
 //        5.3 是否损坏.
+        //ceshi 
         BufferedImage image = ImageIO.read(picFile.getInputStream());
         if(image == null){
             log.info("【修改商品】 您上传的图片已损坏！！！");
