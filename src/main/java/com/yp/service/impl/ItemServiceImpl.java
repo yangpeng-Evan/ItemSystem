@@ -63,7 +63,7 @@ public class ItemServiceImpl implements ItemService {
     public void updateItemById(Item item) {
         int count = itemMapper.updateByPrimaryKeySelective(item);
         if(count != 1){
-            log.error("【修改商品信息】 修改商品信息失败！！！item",item);
+            log.error("【修改商品信息】 修改商品信息失败！！！item={}",item);
             throw new SsmException(ExceptionInfoEnum.PARAM_ERROR.getCode(),"商品信息参数错误");
         }
     }

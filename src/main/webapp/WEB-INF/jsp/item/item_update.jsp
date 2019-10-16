@@ -34,7 +34,7 @@
         <tr class="success">
             <td><label for="productionDate">生产日期:</label></td>
             <td>
-                <input type="text" value="${item.productionDate}" class="form-control" name="productionDate" id="productionDate" data-options="{'type':'YYYY-MM-DD','beginYear':2010,'endYear':2088}" placeholder="请输入生产日期" />
+                <input type="text" value="<fmt:formatDate value="${item.productionDate}" pattern="yyyy-MM-dd"/>"  class="form-control" name="productionDate" id="productionDate" data-options="{'type':'YYYY-MM-DD','beginYear':2010,'endYear':2088}" placeholder="请输入生产日期" />
             </td>
         </tr>
         <tr class="warning">
@@ -87,10 +87,11 @@
         // 2. 封装数据.  layUI
         var formData = new FormData();
         formData.append("picFile",$("#picFile")[0].files[0]);
-        formData.append("name",$("#name").val());
+        formData.append("name",$("#ename ").val());
         formData.append("price",$("#price").val());
         formData.append("productionDate",$("#productionDate").val());
         formData.append("description",$("#description").val());
+        formData.append("id",${item.id});
         // 3. 发送ajax请求,并携带封装好的数据.
         $.ajax({
             url: "${pageContext.request.contextPath}/item/update",
@@ -98,14 +99,14 @@
             type: "post",
             dataType: "json",
             success: function(result){
-                // 4.1 如果添加成功 -> 跳转到/item/list
-                <%--if(result.code == 0){--%>
-                <%--    alert("修改成功！")--%>
-                <%--    //location.href = "${pageContext.request.contextPath}/item/list";--%>
-                <%--}else {--%>
-                <%--    // 4.2 如果添加失败 -> 给用户提示.--%>
-                <%--    $("#updateInfo").html(result.msg);--%>
-                <%--}--%>
+                // 4.1 如果修改成功 -> 跳转到/item/list
+                if(result.code == 0){
+                    alert("修改成功！")
+                    location.href = "${pageContext.request.contextPath}/item/list";
+                }else {
+                    // 4.2 如果修改失败 -> 给用户提示.
+                    $("#updateInfo").html(result.msg);
+                }
             },
             error: function(){
                 alert("服务器爆炸!");

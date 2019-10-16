@@ -15,6 +15,7 @@ public class Item  implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@NotNull(message = "商品id不能为空")
 	private Integer id;
 
 	@NotBlank(message = "商品名称为必填项，不能为空")

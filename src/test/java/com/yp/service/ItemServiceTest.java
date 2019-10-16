@@ -34,4 +34,18 @@ public class ItemServiceTest extends SpringTests {
     public void deleteItem(){
         itemService.deleteItem(18);
     }
+
+    @Test
+    public void findItemById(){
+        Item item = itemService.FindItemById(12);
+        System.out.println(item);
+    }
+
+    @Test
+    public void updateItemById(){
+        Item item = new Item();
+        item.setId(12);
+        item.setName("测试修改商品信息");
+        itemService.updateItemById(item);
+    }
 }
