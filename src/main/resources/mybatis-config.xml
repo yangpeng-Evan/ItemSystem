@@ -7,6 +7,10 @@
         <setting name="mapUnderscoreToCamelCase" value="true"/>
     </settings>
 
+    <typeHandlers>
+        <package name="com.yp.typehandler"/>
+    </typeHandlers>
+
     <plugins>
         <plugin interceptor="com.github.pagehelper.PageInterceptor"></plugin>
     </plugins>

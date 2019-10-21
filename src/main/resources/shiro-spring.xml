@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<!--   创建realm -->
+    <bean id="realm" class="com.yp.realm.CustomRealm"/>
+
+<!--    创建安全管理器-->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="realm"/>
+    </bean>
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+         <property name="securityManager" ref="securityManager" />
+<!--         过滤器链-->
+        <property name="filterChainDefinitionMap" ref="filterChainsMap"/>
+        <!--<property name="filterChainDefinitions">
+            <value>
+                /user/logout = logout
+                /user/login-ui = anon
+                /user/login = anon
+                /** = authc
+            </value>
+        </property>-->
+<!--        设置登录页面-->
+        <property name="loginUrl" value="/user/login-ui" />
+<!--        配置自定义过滤器-->
+        <property name="filters">
+            <map>
+                <entry key="rolesOr" value-ref="rolesOr"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="rolesOr" class="com.yp.filter.RolesOrFilter"/>
+
+    <bean id="filterChainsMapFactory" class="com.yp.factory.FilterChainsMapFactory"/>
+    <bean id="filterChainsMap" factory-bean="filterChainsMapFactory" factory-method="instance"/>
+</beans>

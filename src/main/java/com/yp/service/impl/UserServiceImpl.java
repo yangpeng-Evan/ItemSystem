@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author yangpeng
@@ -78,5 +78,33 @@ public class UserServiceImpl implements UserService {
             throw new SsmException(ExceptionInfoEnum.USER_USERNAMEANDPASSWORD_ERROR);
         }
         return user;
+    }
+
+    @Override
+    public User findByUsername(String username) {
+        User param = new User();
+        param.setUsername(username);
+        User user = userMapper.selectOne(param);
+        return user;
+    }
+
+    @Override
+    public Set<String> findRoleNamesByUsername(String username) {
+        Set<String> roleNames = userMapper.findRoleNamesByUsername(username);
+        return roleNames;
+    }
+
+    @Override
+    public Set<String> findPermissionsByRoleNames(Set<String> roleNames) {
+        Map<String,Object> map = new HashMap<>();
+        map.put("roleNames",roleNames);
+        Set<String> permissions = userMapper.findPermissionsByRoleNames(map);
+        return permissions;
+    }
+
+    @Override
+    public LinkedHashMap<String, String> findFilterChainsMap() {
+        LinkedHashMap<String, String> filterChainsMap = userMapper.findFilterChainsMap();
+        return filterChainsMap;
     }
 }

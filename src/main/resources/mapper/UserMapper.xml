@@ -4,4 +4,23 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yp.mapper.UserMapper">
 
+    <!--    //  根据用户名查询角色信息-->
+    <!--    Set<String> findRoleNamesByUsername(String username);-->
+    <select id="findRoleNamesByUsername" resultType="String">
+        select role_name from user_roles where username = #{username}
+    </select>
+    <!--    //根据角色信息查询权限信息-->
+    <!--    Set<String> findPermissionsByRoleNames(@Param("map") Map<String, Object> map);-->
+    <select id="findPermissionsByRoleNames" resultType="String">
+        select permission from roles_permissions where role_name in
+        <foreach collection="map.roleNames" item="roleName" open="(" separator="," close=")">
+            #{roleName}
+        </foreach>
+    </select>
+
+    <!--    // 3. 查询过滤器链信息.-->
+    <!--    LinkedHashMap<String, String> findFilterChainsMap();-->
+    <select id="findFilterChainsMap" resultType="java.util.LinkedHashMap">
+        select * from filter_chain order by ordered asc
+    </select>
 </mapper>

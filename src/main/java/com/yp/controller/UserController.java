@@ -8,6 +8,9 @@ import com.yp.service.UserService;
 import com.yp.util.SendSMSUtil;
 import com.yp.vo.ResultVO;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -59,6 +62,7 @@ public class UserController {
         return vo;
     }
 
+    //执行注册方法
     @PostMapping("/register")
     @ResponseBody
     public ResultVO register(@Valid User user, BindingResult bandingResult, String registerCode,HttpSession session){
@@ -88,16 +92,21 @@ public class UserController {
     @PostMapping("/login")
     @ResponseBody
     public ResultVO login(String username,String password,HttpSession session){
+
         //校验参数
         if(StringUtils.isEmpty(username)||StringUtils.isEmpty(password)){
             log.info("【登录功能】 用户名或密码为空！！！username={},password={}",username,password);
             throw new SsmException(ExceptionInfoEnum.USER_USERNAMEANDPASSWORD_ERROR.getCode(),"用户名和密码不能为空！！！");
         }
+        Subject subject = SecurityUtils.getSubject();
+        subject.login(new UsernamePasswordToken(username,password));
         //调用service方法查询用户信息
         User user = userService.login(username, password);
         //将查询到的用户信息设置到session域中
         session.setAttribute(USER_INFO,user);
         log.info("【登录功能】 用户名和密码校验正确！！！");
+        //return new ResultVO(0,"成功",null);
+
         return new ResultVO(0,"成功",null);
     }
 }
